@@ -1,0 +1,48 @@
+#include <iostream>
+#include <stack>
+#include <cmath>
+
+using namespace std;
+
+// Function to calculate the factorial of a number
+int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    int result = 1;
+    for (int i = 2; i <= n; ++i) {
+        result *= i;
+    }
+    return result;
+}
+
+// Function to generate the sine series using explicit stack
+double sineSeries(double x, int terms) {
+    stack<double> sineStack;
+    double sineValue = 0.0;
+
+    for (int i = 0; i < terms; ++i) {
+        double term = pow(-1, i) * pow(x, 2 * i + 1) / factorial(2 * i + 1);
+        sineStack.push(term);
+        sineValue += term;
+    }
+
+    return sineValue;
+}
+
+int main() {
+    double x;
+    int terms;
+
+    cout << "Enter the value of x in radians: ";
+    cin >> x;
+
+    cout << "Enter the number of terms: ";
+    cin >> terms;
+
+    double result = sineSeries(x, terms);
+
+    cout << "The sine series value for x = " << x << " with " << terms << " terms: " << result << endl;
+
+    return 0;
+}
