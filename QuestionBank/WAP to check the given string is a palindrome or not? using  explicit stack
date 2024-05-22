@@ -1,0 +1,47 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+// Function to check if a string is a palindrome using a stack
+bool isPalindrome(const string& str) {
+    stack<char> charStack;
+    string processedStr;
+
+    // Remove non-alphanumeric characters and convert to lowercase
+    for (char c : str) {
+        if (isalnum(c)) {
+            processedStr += tolower(c);
+        }
+    }
+
+    for (int i = 0; i < charStack.size() ; ++i) {
+        charStack.push(processedStr[i]);
+    }
+    string result;
+    for (char c : processedStr) {
+        if (c != charStack.top()) {
+            return false; // Characters don't match
+        }
+        charStack.pop();
+    }
+
+
+    return true ; // All characters matched
+}
+
+int main() {
+    string str;
+    cout << "Enter a string: ";
+    getline(cin, str);
+
+    if (isPalindrome(str)) {
+        cout << "The string \"" << str << "\" is a palindrome." << endl;
+    } else {
+        cout << "The string \"" << str << "\" is not a palindrome." << endl;
+    }
+
+    return 0;
+}
