@@ -1,0 +1,136 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <set>
+
+using namespace std;
+
+// Structure to represent a product
+struct Product {
+    string code;
+    string name;
+    double price;
+    int amountInStock;
+    string dateReceived;
+    string expirationDate;
+
+    // Constructor to initialize product data
+    Product(string c, string n, double p, int s, string dRec, string exp)
+        : code(c), name(n), price(p), amountInStock(s), dateReceived(dRec), expirationDate(exp) {}
+};
+
+// Comparator function to compare products by their names
+struct CompareByName {
+    bool operator()(const Product* a, const Product* b) const {
+        return a->name < b->name;
+    }
+};
+
+// Binary search tree to store products by their codes
+map<string, Product*> productsByCode;
+
+// Set to store valid products sorted lexicographically by their names
+set<Product*, CompareByName> validProducts;
+
+// Function to insert a new product
+void insertProduct(const Product& product) {
+    // Check if the product code already exists
+    if (productsByCode.find(product.code) != productsByCode.end()) {
+        cout << "Product with code " << product.code << " already exists." << endl;
+        return;
+    }
+    // Insert product into productsByCode map
+    productsByCode[product.code] = new Product(product);
+    // Insert product into validProducts set
+    validProducts.insert(productsByCode[product.code]);
+    cout << "Product inserted successfully." << endl;
+}
+
+// Function to find a product by its code and update it
+void findAndUpdateProduct(const string& code) {
+    // Check if the product code exists
+    if (productsByCode.find(code) == productsByCode.end()) {
+        cout << "Product with code " << code << " does not exist." << endl;
+        return;
+    }
+    // Update product details
+    Product* product = productsByCode[code];
+    cout << "Enter new name: ";
+    cin >> product->name;
+    cout << "Enter new price: ";
+    cin >> product->price;
+    cout << "Enter new amount in stock: ";
+    cin >> product->amountInStock;
+    cout << "Enter new date received: ";
+    cin >> product->dateReceived;
+    cout << "Enter new expiration date: ";
+    cin >> product->expirationDate;
+    cout << "Product updated successfully." << endl;
+}
+
+// Function to list valid products in lexicographic order of their names
+void listValidProducts() {
+    cout << "Valid Products:" << endl;
+    for (auto product : validProducts) {
+        cout << "Code: " << product->code << ", Name: " << product->name << ", Price: " << product->price
+             << ", Amount in Stock: " << product->amountInStock << ", Date Received: " << product->dateReceived
+             << ", Expiration Date: " << product->expirationDate << endl;
+    }
+}
+
+int main() {
+    int choice;
+    string code;
+
+    do {
+        cout << "\nMenu:" << endl;
+        cout << "1. Insert a new product" << endl;
+        cout << "2. Find and update a product by code" << endl;
+        cout << "3. List valid products in lexicographic order of their names" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string name, dateReceived, expirationDate;
+                double price;
+                int amountInStock;
+                cout << "Enter product code: ";
+                cin >> code;
+                cout << "Enter product name: ";
+                cin >> name;
+                cout << "Enter product price: ";
+                cin >> price;
+                cout << "Enter amount in stock: ";
+                cin >> amountInStock;
+                cout << "Enter date received: ";
+                cin >> dateReceived;
+                cout << "Enter expiration date: ";
+                cin >> expirationDate;
+                insertProduct(Product(code, name, price, amountInStock, dateReceived, expirationDate));
+                break;
+            }
+            case 2:
+                cout << "Enter product code to find and update: ";
+                cin >> code;
+                findAndUpdateProduct(code);
+                break;
+            case 3:
+                listValidProducts();
+                break;
+            case 4:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 4." << endl;
+        }
+    } while (choice != 4);
+
+    // Deallocate memory for products
+    for (auto p : productsByCode) {
+        delete p.second;
+    }
+
+    return 0;
+}
