@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+// Structure to represent a node in the binary heap
+struct Node {
+    int value;
+    int index; // Index of the node in the array representation of the heap
+};
+
+// Function to traverse the heap of array elements using an explicit stack
+void traverseHeap(const vector<int>& heap) {
+    stack<Node> nodeStack;
+    nodeStack.push({heap[0], 0}); // Push the root node onto the stack
+
+    while (!nodeStack.empty()) {
+        Node currentNode = nodeStack.top();
+        nodeStack.pop();
+        cout << currentNode.value << " "; // Print the value of the current node
+
+        // Calculate the indices of the left and right children
+        int leftChildIndex = 2 * currentNode.index + 1;
+        int rightChildIndex = 2 * currentNode.index + 2;
+
+        // Push the left child onto the stack if it exists
+        if (leftChildIndex < heap.size()) {
+            nodeStack.push({heap[leftChildIndex], leftChildIndex});
+        }
+
+        // Push the right child onto the stack if it exists
+        if (rightChildIndex < heap.size()) {
+            nodeStack.push({heap[rightChildIndex], rightChildIndex});
+        }
+    }
+}
+
+int main() {
+    vector<int> heap = {8, 5, 6, 2, 3, 4};
+
+    cout << "Traversing the heap:";
+    traverseHeap(heap);
+    cout << endl;
+
+    return 0;
+}
