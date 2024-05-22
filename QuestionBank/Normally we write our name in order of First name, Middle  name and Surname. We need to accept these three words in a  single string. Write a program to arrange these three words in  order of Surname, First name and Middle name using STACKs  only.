@@ -1,0 +1,48 @@
+#include <iostream>
+#include <stack>
+#include <sstream>
+
+using namespace std;
+
+// Function to rearrange the name using stacks
+string rearrangeName(const string& fullName) {
+    stack<string> nameStack;
+    stringstream ss(fullName);
+    string word, rearrangedName;
+
+    // Tokenize the input string and push each word onto the stack
+    while (ss >> word) {
+        nameStack.push(word);
+    }
+
+    // Pop words from the stack and append them to the rearranged name
+    // in the desired order: Surname, First name, Middle name
+    if (!nameStack.empty()) {
+        rearrangedName += nameStack.top(); // Last word (Surname)
+        nameStack.pop();
+    }
+    string middlerearrangedName;
+    if (!nameStack.empty()) {
+        middlerearrangedName = " " + nameStack.top(); // First word (First name)
+        nameStack.pop();
+    }
+    while (!nameStack.empty()) {
+        rearrangedName += " " + nameStack.top(); // Middle name
+        nameStack.pop();
+    }
+    if(!middlerearrangedName.empty()) rearrangedName += middlerearrangedName;
+
+    return rearrangedName;
+}
+
+int main() {
+    string fullName;
+    cout << "Enter your full name (First name Middle name Surname): ";
+    getline(cin, fullName);
+
+    string rearrangedName = rearrangeName(fullName);
+
+    cout << "Rearranged name: " << rearrangedName << endl;
+
+    return 0;
+}
