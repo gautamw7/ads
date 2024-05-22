@@ -1,0 +1,50 @@
+#include <iostream>
+#include <stack>
+#include <cmath>
+
+using namespace std;
+
+// Function to convert decimal to binary
+string decimalToBinary(int decimal) {
+    string binary = "";
+    while (decimal > 0) {
+        binary = to_string(decimal % 2) + binary;
+        decimal /= 2;
+    }
+    return binary;
+}
+
+int main() {
+    // Decimal number written in the box in room 5
+    int decimalNumber;
+    cout << "Enter the decimal number written in the box in room 5: ";
+    cin >> decimalNumber;
+
+    // Convert decimal number to binary
+    string binaryCode = decimalToBinary(decimalNumber);
+    cout << "Binary code for the treasure: " << binaryCode << endl;
+
+    // Stack to keep track of rooms visited
+    stack<int> rooms;
+
+    // Visit rooms from 1 to 5
+    for (int room = 1; room <= 5; room++) {
+        rooms.push(room); // Push the room number onto the stack
+        cout << "Entering room " << room << endl;
+
+        // If it's room 5, check the binary code and unlock treasure if code matches
+        if (room == 5 && binaryCode == "10101") {
+            cout << "Treasure unlocked! You found the treasure in room 1." << endl;
+            break;
+        }
+    }
+
+    // Visit rooms in reverse order from 5 to 1
+    while (!rooms.empty()) {
+        int room = rooms.top(); // Get the top room from the stack
+        rooms.pop(); // Pop the top room from the stack
+        cout << "Leaving room " << room << endl;
+    }
+
+    return 0;
+}
