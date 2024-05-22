@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stack>
+#include <cmath>
+
+using namespace std;
+
+// Function to convert binary number to decimal using explicit stack
+int binaryToDecimal(const string& binary) {
+    stack<int> binaryStack;
+
+    // Push each digit of the binary number onto the stack
+    for (char bit : binary) {
+        if (bit == '0' || bit == '1') {
+            binaryStack.push(bit - '0'); // Convert char to int and push onto stack
+        } else {
+            cout << "Invalid binary number. Exiting..." << endl;
+            return -1; // Error code indicating invalid binary number
+        }
+    }
+
+    // Calculate the decimal equivalent
+    int decimal = 0;
+    int exponent = 0;
+    while (!binaryStack.empty()) {
+        decimal += binaryStack.top() * pow(2, exponent);
+        binaryStack.pop();
+        exponent++;
+    }
+
+    return decimal;
+}
+
+int main() {
+    string binary;
+    cout << "Enter a binary number: ";
+    cin >> binary;
+
+    int decimal = binaryToDecimal(binary);
+    if (decimal != -1) {
+        cout << "Decimal equivalent: " << decimal << endl;
+    }
+
+    return 0;
+}
