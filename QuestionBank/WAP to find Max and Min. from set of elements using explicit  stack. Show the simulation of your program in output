@@ -1,0 +1,57 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+// Function to find maximum and minimum elements using two separate stacks
+pair<int, int> findMaxMin(const vector<int>& elements) {
+    stack<int> maxStack;
+    stack<int> minStack;
+
+    // Initialize max and min elements
+    int maxElement = INT_MIN; // Initialize maxElement to the smallest possible integer value
+    int minElement = INT_MAX; // Initialize minElement to the largest possible integer value
+
+    maxStack.push(maxElement);
+    minStack.push(minElement);
+    for (int element : elements) {
+        if(maxStack.top() >= element) continue;
+        else {
+            maxStack.pop();
+            maxStack.push(element);
+        }
+    }
+
+    // Iterate through each element in the input vector to find minimum element
+    for (int element : elements) {
+        if(minStack.top() <= element) continue;
+        else {
+            minStack.pop();
+            minStack.push(element);
+        }
+    }
+
+    // Get the top elements of max and min stacks
+    maxElement = maxStack.top();
+    minElement = minStack.top();
+
+    return make_pair(maxElement, minElement);
+}
+
+int main() {
+    vector<int> elements = {5, 8, 3, 12, 7, 10};
+
+    cout << "Simulation of finding maximum and minimum elements from the set: ";
+    for (int element : elements) {
+        cout << element << " ";
+    }
+    cout << endl;
+
+    pair<int, int> maxMin = findMaxMin(elements);
+
+    cout << "Maximum element: " << maxMin.first << endl;
+    cout << "Minimum element: " << maxMin.second << endl;
+
+    return 0;
+}
