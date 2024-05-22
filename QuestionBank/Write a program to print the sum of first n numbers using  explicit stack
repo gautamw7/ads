@@ -1,0 +1,36 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+// Function to calculate the sum of the first n natural numbers using explicit stack
+int sumOfFirstN(int n) {
+    stack<int> numbers;
+
+    // Push numbers from 1 to n onto the stack
+    for (int i = 1; i <= n; ++i) {
+        numbers.push(i);
+    }
+
+    // Compute the sum by popping numbers from the stack
+    int sum = 0;
+    while (!numbers.empty()) {
+        sum += numbers.top();
+        numbers.pop();
+    }
+
+    return sum;
+}
+
+int main() {
+    int n;
+
+    cout << "Enter the value of n: ";
+    cin >> n;
+
+    int sum = sumOfFirstN(n);
+
+    cout << "Sum of the first " << n << " natural numbers: " << sum << endl;
+
+    return 0;
+}
