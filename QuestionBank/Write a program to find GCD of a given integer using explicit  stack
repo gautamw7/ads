@@ -1,0 +1,33 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+// Function to find the greatest common divisor (GCD) of two integers using explicit stack
+int gcd(int a, int b) {
+    stack<int> remainders;
+
+    // Push remainders onto the stack until remainder becomes zero
+    while (b != 0) {
+        remainders.push(a % b);
+        a = b;
+        b = remainders.top();
+        remainders.pop();
+    }
+
+    // The last non-zero remainder is the GCD
+    return a;
+}
+
+int main() {
+    int num1, num2;
+
+    cout << "Enter two integers: ";
+    cin >> num1 >> num2;
+
+    int result = gcd(num1, num2);
+
+    cout << "GCD of " << num1 << " and " << num2 << " is: " << result << endl;
+
+    return 0;
+}
