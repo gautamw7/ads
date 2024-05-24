@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <unordered_set>
+
+using namespace std;
+
+// Function to perform Depth-First Search (DFS) on the graph
+void DFS(vector<vector<int>>& graph, int node, vector<bool>& visited, stack<int>& result) {
+    visited[node] = true;
+    for (int neighbor : graph[node]) {
+        if (!visited[neighbor]) {
+            DFS(graph, neighbor, visited, result);
+
+        }
+    }
+    // Push the current node onto the stack after visiting all its neighbors
+    result.push(node);
+}
+
+// Function to perform topological sort on the given graph
+vector<int> topologicalSort(vector<vector<int>>& graph, int numNodes) {
+    vector<bool> visited(numNodes, false);
+    stack<int> result;
+
+    // Perform DFS on each unvisited node
+    for (int i = 0; i < numNodes; ++i) {
+        if (!visited[i]) {
+            DFS(graph, i, visited, result);
+        }
+    }
+
+    // Store the topological ordering from the stack
+    vector<int> topoOrder;
+    while (!result.empty()) {
+        topoOrder.push_back(result.top());
+        result.pop();
+    }
+    return topoOrder;
+}
+
+int main() {
+    int numNodes, numEdges;
+    cout << "Enter the number of nodes and edges in the graph: ";
+    cin >> numNodes >> numEdges;
+
+    // Initialize the graph as an adjacency list
+    vector<vector<int>> graph(numNodes);
+
+    cout << "Enter the edges (source node and destination node):" << endl;
+    for (int i = 0; i < numEdges; ++i) {
+        int u, v;
+        cin >> u >> v;
+        // Add the edge to the adjacency list
+        graph[u].push_back(v);
+    }
+
+    // Perform topological sort
+    vector<int> sortedNodes = topologicalSort(graph, numNodes);
+
+    // Print the sorted nodes
+    cout << "Topological ordering of the nodes:" << endl;
+    for (int node : sortedNodes) {
+        cout << node << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
